@@ -1,6 +1,7 @@
 package sy.tech.space.AddressManager_Backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import sy.tech.space.AddressManager_Backend.model.Address;
@@ -11,9 +12,9 @@ import java.util.Optional;
 
 @Service // is a Bean and Service
 public class AddressService {
-   private final AddressRepository addressRepository;
+    private final AddressRepository addressRepository;
 
-   @Autowired
+    @Autowired
     public AddressService(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
     }
@@ -27,29 +28,29 @@ public class AddressService {
         addressRepository.save(address);
     }
 
-    public void deleteById (Long id){
-       addressRepository.deleteById(id);
-      /*
-        Optional<Address> addressOptional = addressRepository.findById(id);
-
-        if (addressOptional.isPresent()) {
-            addressRepository.delete(addressOptional.get());
-            return ResponseEntity.noContent().build(); // 204 No Content response
-        } else {
-            return ResponseEntity.notFound().build(); // 404 Not Found response
-        }*/
-    }
-
-
     public ResponseEntity<Address> updateById(Long id, Address updatedAddress) {
         Optional<Address> existingAddressOptional = addressRepository.findById(id);
         if (existingAddressOptional.isPresent()) {
             Address existingAddress = existingAddressOptional.get();
-               existingAddress.updateAll(updatedAddress);
+            existingAddress.updateAll(updatedAddress);
             addressRepository.save(existingAddress);
             return ResponseEntity.ok(existingAddress);
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    public void deleteAddress(Long id) {
+        boolean exists = addressRepository.existsById(id);
+        if (!exists) {
+            throw new IllegalStateException("Receipt" +
+                    " with id " + id +
+                    "does not exists");
+        }
+        addressRepository.deleteById(id);
+    }
+
+    public void deleteAllAddresses() {
+        addressRepository.deleteAll();
     }
 }
