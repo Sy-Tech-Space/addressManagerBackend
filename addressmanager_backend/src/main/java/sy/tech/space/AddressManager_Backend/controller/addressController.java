@@ -43,7 +43,6 @@ public class addressController {
         addressService.addNewAddress(address);
     }
 
-    // TODO:  @PutMapping is used to update an object
     @PutMapping(value = "update/{id}")
     public ResponseEntity<Address> updateAddress(@PathVariable("id") Long id, @RequestBody Address updatedAddress) {
         return addressService.updateById(id, updatedAddress);

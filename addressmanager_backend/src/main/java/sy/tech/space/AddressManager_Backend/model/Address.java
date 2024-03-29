@@ -77,10 +77,6 @@ public class Address implements Serializable {
         return zip;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
